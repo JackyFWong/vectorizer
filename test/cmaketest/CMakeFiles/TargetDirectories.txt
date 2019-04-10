@@ -1,0 +1,3 @@
+/home/deditionis/github/vectorizer/test/CMakeFiles/rebuild_cache.dir
+/home/deditionis/github/vectorizer/test/CMakeFiles/DisplayImage.dir
+/home/deditionis/github/vectorizer/test/CMakeFiles/edit_cache.dir
