@@ -1,0 +1,3 @@
+/home/pi/vectorizer/test/raspitest/build/CMakeFiles/rebuild_cache.dir
+/home/pi/vectorizer/test/raspitest/build/CMakeFiles/edit_cache.dir
+/home/pi/vectorizer/test/raspitest/build/CMakeFiles/simpletest_raspicam_cv.dir
