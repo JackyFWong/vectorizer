@@ -7,6 +7,9 @@
 
 using namespace std;
 
+// comment out for no debug output
+#define DEBUG
+
 // magn(pixels), direction (deg from right)
 typedef pair<double, double> Vect;
 
@@ -52,14 +55,16 @@ int main (int argc, char **argv) {
 
     Camera.set(cv::CAP_PROP_FORMAT, CV_8UC1);
 
+    #ifdef DEBUG
     cout << "Opening camera..." << endl;
     if (!Camera.open()) {
         cerr << "Error opening the camera" << endl;
         return -1;
     }
-
     cout << "Capturing " << nCount << " frames ...." << endl;
-    for (int i=0; i< nCount; i++) {
+    #endif
+
+    for (int i=0; i< nCount; i++) {     // todo: change infinite loop
         Camera.grab();
         Camera.retrieve(image);
         nR = image.rows;
@@ -74,16 +79,17 @@ int main (int argc, char **argv) {
         cv::minMaxLoc(gray, &minVal, &maxVal, &minLoc, &maxLoc);
 
         // print results for max
+        #ifdef DEBUG
         cout << maxLoc.x << ", " << maxLoc.y << endl;
+        #endif
 
         // calculate vector to the center of the camera
         toCenter.first = distBtwn(imgMid.x, maxLoc.x, imgMid.y, maxLoc.y);
         toCenter.second = angle(imgMid.x, maxLoc.x, imgMid.y, maxLoc.y);
     }
 
+    #ifdef DEBUG
     cout << "Stop camera..." << endl;
+    #endif
     Camera.release();
-
-    cv::imwrite("raspicam_cv_image.jpg", image);
-    cout << "Image saved at raspicam_cv_image.jpg" << endl;
 }
