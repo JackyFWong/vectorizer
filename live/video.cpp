@@ -64,7 +64,7 @@ int main (int argc, char **argv) {
     cout << "Capturing " << nCount << " frames ...." << endl;
     #endif
 
-    for (int i=0; i< nCount; i++) {     // todo: change infinite loop
+    for (int i=0; i< nCount; i++) {     // todo: change to infinite loop
         Camera.grab();
         Camera.retrieve(image);
         nR = image.rows;
@@ -78,14 +78,16 @@ int main (int argc, char **argv) {
         // find x, y coord of brightest part of img
         cv::minMaxLoc(gray, &minVal, &maxVal, &minLoc, &maxLoc);
 
-        // print results for max
-        #ifdef DEBUG
-        cout << maxLoc.x << ", " << maxLoc.y << endl;
-        #endif
-
         // calculate vector to the center of the camera
         toCenter.first = distBtwn(imgMid.x, maxLoc.x, imgMid.y, maxLoc.y);
         toCenter.second = angle(imgMid.x, maxLoc.x, imgMid.y, maxLoc.y);
+        
+        // print results for max and vector
+        #ifdef DEBUG
+        cout << "Max: " << maxLoc.x << ", " << maxLoc.y << endl;
+        cout << "Vect: mag " << toCenter.first << " deg " << 
+            toCenter.second << endl;
+        #endif
     }
 
     #ifdef DEBUG
