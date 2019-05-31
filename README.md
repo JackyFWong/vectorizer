@@ -92,4 +92,4 @@ Compile every time afterwards.
 cd live/build
 make
 ```
-Execute `live/build/video' for the program.
+Execute `live/build/video` for the program.

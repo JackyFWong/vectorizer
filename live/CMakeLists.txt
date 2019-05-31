@@ -1,3 +1,4 @@
+set(CMAKE_CXX_STANDARD 11)
 cmake_minimum_required (VERSION 2.8) 
 project (live_analysis)
 set(raspicam_DIR "/usr/local/lib/cmake")
