@@ -1,5 +1,7 @@
 #include <iostream>
 #include <raspicam/raspicam_cv.h>
+#include <opencv2/imgproc.hpp>
+#include <opencv2/core.hpp>
 
 using namespace std;
 
@@ -30,10 +32,10 @@ int main (int argc, char **argv) {
         cv::cvtColor(image, gray, cv::COLOR_BGR2GRAY);
 
         // find x, y coord of brightest part of img
-        cv::minMaxLoc(gray, minVal, maxVal, minLoc, maxLoc);
+        cv::minMaxLoc(gray, &minVal, &maxVal, &minLoc, &maxLoc);
 
         // print results for max
-        cout << maxVal.x, << ", " << maxVal.y << endl;
+        cout << maxLoc.x << ", " << maxLoc.y << endl;
 
         // do something with the max value
     }
