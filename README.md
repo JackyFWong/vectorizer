@@ -50,7 +50,9 @@ cmake -D CMAKE_BUILD_TYPE=RELEASE \
 ```
 The guide mentions increasing the swap size on your RPi. Do so.
 
-`sudo vim /etc/dphys-swapfile`
+```
+sudo vim /etc/dphys-swapfile
+```
 
 Then, set `CONF_SWAPSIZE` to `2048` and restart swap
 ```
@@ -77,3 +79,17 @@ make
 sudo make install
 sudo ldconfig
 ```
+
+## Using the program
+Compile the program on your RPi. If you haven't created the build folder, do so. The `CMakeLists.txt` 
+should be good. This needs to be done only once.
+```
+cd live/build
+cmake ..
+```
+Compile every time afterwards.
+```
+cd live/build
+make
+```
+Execute `live/build/video' for the program.
