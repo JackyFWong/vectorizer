@@ -1,14 +1,17 @@
-#include <ctime>
 #include <iostream>
 #include <raspicam/raspicam_cv.h>
 
 using namespace std;
 
 int main (int argc, char **argv) {
-    time_t timer_begin, timer_end;
     raspicam::RaspiCam_Cv Camera;
     cv::Mat image;
+    cv::Mat gray;
     int nCount=100;
+
+    // for recording brightest part of img
+    double minVal, maxVal;
+    cv::Point minLoc, maxLoc;
 
     Camera.set(cv::CAP_PROP_FORMAT, CV_8UC1);
 
@@ -19,22 +22,25 @@ int main (int argc, char **argv) {
     }
 
     cout << "Capturing " << nCount << " frames ...." << endl;
-    time (&timer_begin);
     for (int i=0; i< nCount; i++) {
         Camera.grab();
         Camera.retrieve(image);
-        if (i%5==0) cout << "\r captured " << i << " images" 
-            << std::flush;
+
+        // convert to grayscale image
+        cv::cvtColor(image, gray, cv::COLOR_BGR2GRAY);
+
+        // find x, y coord of brightest part of img
+        cv::minMaxLoc(gray, minVal, maxVal, minLoc, maxLoc);
+
+        // print results for max
+        cout << maxVal.x, << ", " << maxVal.y << endl;
+
+        // do something with the max value
     }
 
     cout << "Stop camera..." << endl;
     Camera.release();
 
-    time (&timer_end);
-    double secondsElasped = difftime(timer_end, timer_begin);
-    cout << secondsElasped << " seconds for " << nCount << 
-        " frames : FPS = " << (float)((float)(nCount)/secondsElasped)
-        << endl;
     cv::imwrite("raspicam_cv_image.jpg", image);
     cout << "Image saved at raspicam_cv_image.jpg" << endl;
 }
