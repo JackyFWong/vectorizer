@@ -67,6 +67,10 @@ int main (int argc, char **argv) {
     cout << "Using file named " << fileName << " for output." << endl;
     #endif
 
+    // increase log file counter by 1
+    seqFileOut.open("sequence.txt", ios::out);
+    seqFileOut << fileSeq;
+
     /* DATA SETUP FOR CAMERA */
     raspicam::RaspiCam_Cv Camera;
     cv::Mat image;
@@ -129,9 +133,6 @@ int main (int argc, char **argv) {
     Camera.release();
     logFile.close();
 
-    // increase log file counter by 1
-    seqFileOut.open("sequence.txt", ios::out);
-    seqFileOut << fileSeq;
 
     return 0;
 }
