@@ -4,20 +4,24 @@
 #include <raspicam/raspicam_cv.h>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/core.hpp>
+#include <string>
+#include <fstream>
 
 using namespace std;
 
 // comment out for no debug output
 #define DEBUG
 
-// magn(pixels), direction (deg from right)
+// magnitude (pixels), direction (deg from positive x-axis)
 typedef pair<double, double> Vect;
 
+// returns distance
 double distBtwn(double x1, double x2, double y1, double y2) {
     return sqrt(pow((x2-x1),2) + pow((y2-y1),2));
 }
 
 // center x, light x, center y, light y
+// returns angle from positive x-axis in degrees
 double angle(double x1, double x, double y1, double y) {
     y = y - y1;
     x = x - x1;
@@ -40,7 +44,30 @@ double angle(double x1, double x, double y1, double y) {
 }
 
 int main (int argc, char **argv) {
-    // data setup
+    /* FILE FOR OUTPUT */
+    unsigned int fileSeq;
+    ifstream seqFileIn;
+    ofstream seqFileOut;
+
+    seqFileIn.open("sequence.txt", ios::in);
+
+    // if "sequence.txt" exists, read the number & increment
+    if (seqFileIn.is_open()) {
+        seqFileIn >> fileSeq;
+        fileSeq++;
+    }
+    // otherwise start at 1
+    else { fileSeq = 1; }
+
+    ofstream logFile;
+    string fileName = "log" + to_string(fileSeq);
+    logFile.open(fileName, ios::app);
+
+    #ifdef DEBUG
+    cout << "Using file named " << fileName << " for output." << endl;
+    #endif
+
+    /* DATA SETUP FOR CAMERA */
     raspicam::RaspiCam_Cv Camera;
     cv::Mat image;
     cv::Mat gray;
@@ -88,10 +115,23 @@ int main (int argc, char **argv) {
         cout << "Vect: mag " << toCenter.first << " deg " << 
             toCenter.second << endl;
         #endif
+
+        // print results to file
+        logFile << "Max: " << maxLoc.x << ", " << maxLoc.y << endl;
+        logFile << "Vect: mag " << toCenter.first << " deg " << 
+            toCenter.second << endl;
     }
 
     #ifdef DEBUG
     cout << "Stop camera..." << endl;
     #endif
+
     Camera.release();
+    logFile.close();
+
+    // increase log file counter by 1
+    seqFileOut.open("sequence.txt", ios::out);
+    seqFileOut << fileSeq;
+
+    return 0;
 }
