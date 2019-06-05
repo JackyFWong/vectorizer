@@ -32,7 +32,7 @@ double angle(double x1, double x, double y1, double y) {
     if (x == 0 && y < 0) return 270;
 
     // calculation
-    double theta = atan(y, x) * (180/3.1415926536);
+    double theta = atan(y/x) * (180/3.1415926536);
     if (x < 0 && y > 0)
         return theta + 180;
     else if (x < 0 && y < 0)

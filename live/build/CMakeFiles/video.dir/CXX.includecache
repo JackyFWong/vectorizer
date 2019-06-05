@@ -9,11 +9,19 @@
 /home/pi/vectorizer/live/video.cpp
 iostream
 -
+utility
+-
+cmath
+-
 raspicam/raspicam_cv.h
 -
 opencv2/imgproc.hpp
 -
 opencv2/core.hpp
+-
+string
+-
+fstream
 -
 
 /usr/local/include/opencv4/opencv2/calib3d.hpp
