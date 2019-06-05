@@ -93,3 +93,28 @@ cd live/build
 make
 ```
 Execute `live/build/video` for the program.
+
+## Have the program execute on startup
+We will be be using `rc.local` to run the program during boot.
+
+Edit the `rc.local` file
+```
+sudo vim /etc/rc.local
+```
+Add the command to execute the program from root.
+in the file.
+```
+sudo /[path-to-repo-folder]/vectorizer/live/build/video &
+```
+Such as `./home/pi/vectorizer/live/build/video &`. The ampersand 
+is required because the program runs continuously. Ensure that 
+```
+exit 0
+```
+is at the end of the file.
+
+### Recommended!
+If you want the debug output to be saved to a file, the line should be 
+```
+sudo bash -c '/[path]/vectorizer/live/build/video > /home/pi/debug-log.txt 2>&1' &
+```
