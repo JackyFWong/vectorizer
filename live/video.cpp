@@ -74,8 +74,6 @@ int main (int argc, char **argv) {
     /* DATA SETUP FOR CAMERA */
     raspicam::RaspiCam_Cv Camera;
     cv::Mat image;
-    cv::Mat gray;
-    int nCount=100;
     int nR, nC;         // numRows, numCols
     cv::Point imgMid;
     Vect toCenter;
@@ -92,10 +90,10 @@ int main (int argc, char **argv) {
         cerr << "Error opening the camera" << endl;
         return -1;
     }
-    cout << "Capturing " << nCount << " frames ...." << endl;
+    cout << "Capturing and analyzing indefinitely..." << endl;
     #endif
 
-    for (int i=0; i< nCount; i++) {     // todo: change to infinite loop
+    while(1) {
         Camera.grab();
         Camera.retrieve(image);
         nR = image.rows;
@@ -103,11 +101,8 @@ int main (int argc, char **argv) {
         imgMid.x = nC / 2;
         imgMid.y = nR / 2;
 
-        // convert to grayscale image
-        cv::cvtColor(image, gray, cv::COLOR_BGR2GRAY);
-
         // find x, y coord of brightest part of img
-        cv::minMaxLoc(gray, &minVal, &maxVal, &minLoc, &maxLoc);
+        cv::minMaxLoc(image, &minVal, &maxVal, &minLoc, &maxLoc);
 
         // calculate vector to the center of the camera
         toCenter.first = distBtwn(imgMid.x, maxLoc.x, imgMid.y, maxLoc.y);
@@ -132,7 +127,6 @@ int main (int argc, char **argv) {
 
     Camera.release();
     logFile.close();
-
 
     return 0;
 }
