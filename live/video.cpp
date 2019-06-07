@@ -6,6 +6,8 @@
 #include <opencv2/core.hpp>
 #include <string>
 #include <fstream>
+#include <chrono>
+#include <ctime>
 
 using namespace std;
 
@@ -107,15 +109,19 @@ int main (int argc, char **argv) {
         // calculate vector to the center of the camera
         toCenter.first = distBtwn(imgMid.x, maxLoc.x, imgMid.y, maxLoc.y);
         toCenter.second = angle(imgMid.x, maxLoc.x, imgMid.y, maxLoc.y);
+
+        auto timeNow = chrono::system_clock::to_time_t(chrono::system_clock::now());
         
         // print results for max and vector
         #ifdef DEBUG
+        cout << ctime(&timeNow) << endl;
         cout << "Max: " << maxLoc.x << ", " << maxLoc.y << endl;
         cout << "Vect: mag " << toCenter.first << " deg " << 
             toCenter.second << endl;
         #endif
 
         // print results to file
+        logFile << ctime(&timeNow) << endl;
         logFile << "Max: " << maxLoc.x << ", " << maxLoc.y << endl;
         logFile << "Vect: mag " << toCenter.first << " deg " << 
             toCenter.second << endl;
