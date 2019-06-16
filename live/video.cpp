@@ -52,7 +52,7 @@ bool fileExists(const char *fileName) {
 
 int main (int argc, char **argv) {
     /* FILE FOR OUTPUT */
-    unsigned int fileSeq = 1;
+    /*unsigned int fileSeq = 1;
     ifstream seqFileIn;
     ofstream seqFileOut;
 
@@ -69,23 +69,30 @@ int main (int argc, char **argv) {
     
     ofstream logFile;
     string fileName = "log" + to_string(fileSeq);
-    /*char fileName[15] = "cam_data##.txt";
+    char fileName[15] = "cam_data##.txt";
     for (uint8_t i = 0; i < 100; i++) {
         fileName[8] = '0' + i/10;
         fileName[9] = '0' + i%10;
         if (!fileExists(fileName)) {
             break;
         }
-    }*/
+    }
     logFile.open(fileName, ios::app);
 
-    //#ifdef DEBUG
+    #ifdef DEBUG
     cout << "Using file named " << fileName << " for output." << endl;
-    //#endif
+    #endif
 
     // increase log file counter by 1
     seqFileOut.open("sequence.txt", ios::out);
     seqFileOut << fileSeq;
+*/
+
+    /* REPRINT COUT */
+    ifstream outF("home/pi/debug-log.txt");
+    if (outF.is_open()) {
+        cout << outF.rdbuf() << "\n>> NEW FILE <<\n";
+    }
 
     /* DATA SETUP FOR CAMERA */
     raspicam::RaspiCam_Cv Camera;
