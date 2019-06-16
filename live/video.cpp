@@ -45,24 +45,37 @@ double angle(double x1, double x, double y1, double y) {
         return theta;
 }
 
+bool fileExists(char *fileName) {
+    ifstream infile(fileName);
+    return infile.good();
+}
+
 int main (int argc, char **argv) {
     /* FILE FOR OUTPUT */
     unsigned int fileSeq;
-    ifstream seqFileIn;
-    ofstream seqFileOut;
+    //ifstream seqFileIn;
+    //ofstream seqFileOut;
 
-    seqFileIn.open("sequence.txt", ios::in);
+    //seqFileIn.open("sequence.txt", ios::in);
 
     // if "sequence.txt" exists, read the number & increment
-    if (seqFileIn.is_open()) {
+    /*if (seqFileIn.is_open()) {
         seqFileIn >> fileSeq;
         fileSeq++;
     }
     // otherwise start at 1
     else { fileSeq = 1; }
-
+    */
     ofstream logFile;
-    string fileName = "log" + to_string(fileSeq);
+    //string fileName = "log" + to_string(fileSeq);
+    char fileName[15] = "cam_data##.txt";
+    for (uint8_t i = 0; i < 100; i++) {
+        fileName[8] = '0' + i/10;
+        fileName[9] = '0' + i%10;
+        if (fileExists()) {
+            break;
+        }
+    }
     logFile.open(fileName, ios::app);
 
     #ifdef DEBUG
@@ -70,8 +83,8 @@ int main (int argc, char **argv) {
     #endif
 
     // increase log file counter by 1
-    seqFileOut.open("sequence.txt", ios::out);
-    seqFileOut << fileSeq;
+    //seqFileOut.open("sequence.txt", ios::out);
+    //seqFileOut << fileSeq;
 
     /* DATA SETUP FOR CAMERA */
     raspicam::RaspiCam_Cv Camera;
@@ -132,7 +145,6 @@ int main (int argc, char **argv) {
     #endif
 
     Camera.release();
-    logFile.close();
 
     return 0;
 }
