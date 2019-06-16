@@ -12,7 +12,7 @@
 using namespace std;
 
 // comment out for no debug output
-#define DEBUG
+//#define DEBUG
 
 // magnitude (pixels), direction (deg from positive x-axis)
 typedef pair<double, double> Vect;
@@ -45,46 +45,47 @@ double angle(double x1, double x, double y1, double y) {
         return theta;
 }
 
-bool fileExists(char *fileName) {
+bool fileExists(const char *fileName) {
     ifstream infile(fileName);
     return infile.good();
 }
 
 int main (int argc, char **argv) {
     /* FILE FOR OUTPUT */
-    unsigned int fileSeq;
-    //ifstream seqFileIn;
-    //ofstream seqFileOut;
+    unsigned int fileSeq = 1;
+    ifstream seqFileIn;
+    ofstream seqFileOut;
 
-    //seqFileIn.open("sequence.txt", ios::in);
+    seqFileIn.open("sequence.txt", ios::in);
 
     // if "sequence.txt" exists, read the number & increment
-    /*if (seqFileIn.is_open()) {
+    if (seqFileIn.is_open()) {
         seqFileIn >> fileSeq;
         fileSeq++;
     }
     // otherwise start at 1
     else { fileSeq = 1; }
-    */
+    seqFileIn.close();
+    
     ofstream logFile;
-    //string fileName = "log" + to_string(fileSeq);
-    char fileName[15] = "cam_data##.txt";
+    string fileName = "log" + to_string(fileSeq);
+    /*char fileName[15] = "cam_data##.txt";
     for (uint8_t i = 0; i < 100; i++) {
         fileName[8] = '0' + i/10;
         fileName[9] = '0' + i%10;
-        if (fileExists()) {
+        if (!fileExists(fileName)) {
             break;
         }
-    }
+    }*/
     logFile.open(fileName, ios::app);
 
-    #ifdef DEBUG
+    //#ifdef DEBUG
     cout << "Using file named " << fileName << " for output." << endl;
-    #endif
+    //#endif
 
     // increase log file counter by 1
-    //seqFileOut.open("sequence.txt", ios::out);
-    //seqFileOut << fileSeq;
+    seqFileOut.open("sequence.txt", ios::out);
+    seqFileOut << fileSeq;
 
     /* DATA SETUP FOR CAMERA */
     raspicam::RaspiCam_Cv Camera;
@@ -134,10 +135,10 @@ int main (int argc, char **argv) {
         #endif
 
         // print results to file
-        logFile << ctime(&timeNow) << endl;
+        logFile << ctime(&timeNow);
         logFile << "Max: " << maxLoc.x << ", " << maxLoc.y << endl;
         logFile << "Vect: mag " << toCenter.first << " deg " << 
-            toCenter.second << endl;
+            toCenter.second << "\n" << endl;
     }
 
     #ifdef DEBUG
