@@ -12,7 +12,7 @@
 using namespace std;
 
 // comment out for no debug output
-//#define DEBUG
+#define DEBUG
 
 // magnitude (pixels), direction (deg from positive x-axis)
 typedef pair<double, double> Vect;
@@ -45,55 +45,7 @@ double angle(double x1, double x, double y1, double y) {
         return theta;
 }
 
-bool fileExists(const char *fileName) {
-    ifstream infile(fileName);
-    return infile.good();
-}
-
 int main (int argc, char **argv) {
-    /* FILE FOR OUTPUT */
-    /*unsigned int fileSeq = 1;
-    ifstream seqFileIn;
-    ofstream seqFileOut;
-
-    seqFileIn.open("sequence.txt", ios::in);
-
-    // if "sequence.txt" exists, read the number & increment
-    if (seqFileIn.is_open()) {
-        seqFileIn >> fileSeq;
-        fileSeq++;
-    }
-    // otherwise start at 1
-    else { fileSeq = 1; }
-    seqFileIn.close();
-    
-    ofstream logFile;
-    string fileName = "log" + to_string(fileSeq);
-    char fileName[15] = "cam_data##.txt";
-    for (uint8_t i = 0; i < 100; i++) {
-        fileName[8] = '0' + i/10;
-        fileName[9] = '0' + i%10;
-        if (!fileExists(fileName)) {
-            break;
-        }
-    }
-    logFile.open(fileName, ios::app);
-
-    #ifdef DEBUG
-    cout << "Using file named " << fileName << " for output." << endl;
-    #endif
-
-    // increase log file counter by 1
-    seqFileOut.open("sequence.txt", ios::out);
-    seqFileOut << fileSeq;
-*/
-
-    /* REPRINT COUT */
-    ifstream outF("home/pi/debug-log.txt");
-    if (outF.is_open()) {
-        cout << outF.rdbuf() << "\n>> NEW FILE <<\n";
-    }
-
     /* DATA SETUP FOR CAMERA */
     raspicam::RaspiCam_Cv Camera;
     cv::Mat image;
@@ -110,7 +62,7 @@ int main (int argc, char **argv) {
     #ifdef DEBUG
     cout << "Opening camera..." << endl;
     if (!Camera.open()) {
-        cerr << "Error opening the camera" << endl;
+        cout << "Error opening the camera" << endl;
         return -1;
     }
     cout << "Capturing and analyzing indefinitely..." << endl;
@@ -135,17 +87,12 @@ int main (int argc, char **argv) {
         
         // print results for max and vector
         #ifdef DEBUG
-        cout << ctime(&timeNow) << endl;
+        cout << ctime(&timeNow);
         cout << "Max: " << maxLoc.x << ", " << maxLoc.y << endl;
         cout << "Vect: mag " << toCenter.first << " deg " << 
-            toCenter.second << endl;
+            toCenter.second << "\n" << endl;
         #endif
 
-        // print results to file
-        logFile << ctime(&timeNow);
-        logFile << "Max: " << maxLoc.x << ", " << maxLoc.y << endl;
-        logFile << "Vect: mag " << toCenter.first << " deg " << 
-            toCenter.second << "\n" << endl;
     }
 
     #ifdef DEBUG
